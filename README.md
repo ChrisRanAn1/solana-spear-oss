@@ -1,6 +1,6 @@
 # solana-spear
 
-A Rust / Anchor audit agent fleet for Solana programs.
+An audit agent fleet for Solana programs.
 
 `spear` clones a GitHub repo, collects all in-scope `.rs` files, fans them out
 to 8 specialist auditor agents in parallel, then runs a judge + dedup pass and
