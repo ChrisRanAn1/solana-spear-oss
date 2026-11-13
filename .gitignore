@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+__pycache__.bak/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# OS
+.DS_Store
+
+# Local runtime state / secrets (never commit API keys)
+.solana-spear/
+config.json
+
+# Generated reports
+audit-*.md

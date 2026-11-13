@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# spear-poc launcher.
+#   - First invocation: opens a NEW Terminal.app window running the PoC REPL.
+#   - Re-invocation inside that window (SPEAR_POC_EMBEDDED=1): runs harness.py in-place.
+
+set -e
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -L "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+
+if [ "$SPEAR_POC_EMBEDDED" = "1" ]; then
+  cd "$DIR" && exec python3 -m poc.harness "$@"
+fi
+
+QUOTED_ARGS=""
+for a in "$@"; do
+  QUOTED_ARGS+=" $(printf %q "$a")"
+done
+
+TMP_DIR=$(mktemp -d -t spear-poc-launcher)
+LAUNCHER="$TMP_DIR/run.sh"
+{
+  echo '#!/bin/bash'
+  echo 'export SPEAR_POC_EMBEDDED=1'
+  echo "cd $(printf %q "$DIR")"
+  echo "exec python3 -m poc.harness$QUOTED_ARGS"
+} > "$LAUNCHER"
+chmod +x "$LAUNCHER"
+
+if ! open -a Terminal "$LAUNCHER" 2>/dev/null; then
+  echo "[spear-poc] Could not launch Terminal.app; running in the current window instead:"
+  exec "$LAUNCHER"
+fi
+
+echo "[spear-poc] Launched in a new Terminal window 🎯"
