@@ -4,9 +4,7 @@ An audit agent fleet for Solana programs.
 
 `spear` clones a GitHub repo, collects all in-scope `.rs` files, fans them out
 to 8 specialist auditor agents in parallel, then runs a judge + dedup pass and
-writes a Markdown report to `~/Desktop`. `spear-poc` takes an existing audit
-report and tries to reproduce each finding as a runnable proof-of-concept
-against the real workspace.
+writes a Markdown report to `~/Desktop`. 
 
 Both tools are REPLs — you paste a GitHub URL (and optionally a scope), and
 they do the rest. They can also be driven non-interactively so another agent
@@ -25,7 +23,6 @@ they do the rest. They can also be driven non-interactively so another agent
 ```
 solana-spear/
 ├── spear             # launcher: audit REPL (harness.py)
-├── spear-poc         # launcher: PoC reproducer REPL (poc/harness.py)
 ├── harness.py        # audit REPL — parse → clone → fan-out → judge → dedup → write
 ├── agent_runner.py   # single-agent LLM call with retry / backoff
 ├── collector.py      # git clone, .rs walker, source concatenation, token estimate
@@ -37,10 +34,7 @@ solana-spear/
 ├── config.py         # models, agents list, prompt paths, limits
 ├── judging.md        # judge prompt
 ├── prompts/          # 8 specialist agent prompts + shared-rules + dedup
-└── poc/              # spear-poc: env setup, extraction, executor, assertion, debug
-    ├── harness.py
-    ├── runner.py
-    └── prompts/
+
 ```
 
 ## How it works
