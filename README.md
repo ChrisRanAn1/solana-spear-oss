@@ -205,32 +205,6 @@ window" behavior of the `spear` launcher and runs in-place.
 > Note: `spear` currently audits the **first** target per request; batch multiple
 > repos by issuing one invocation each.
 
-## Usage — `spear-poc` (experimental)
-
-```bash
-spear-poc
-```
-
-Paste (1) the GitHub URL of the audited repo and (2) the local path to the
-`spear` Markdown report. `spear-poc` will:
-
-1. Set up the Anchor / Solana toolchain (`env_setup` agent, `poc/env_agent.py`).
-2. Clone the repo and figure out the minimal `workspace.members`
-   (`build_members` agent).
-3. Run `yarn install` and `anchor build`, self-healing common build errors
-   (`debug` agent, `poc/debug_agent.py`).
-4. For each finding: scope the relevant code (`scope` agent), synthesize an
-   attack transaction (`executor` agent), and assert the expected impact
-   (`assertion` agent).
-
-Non-interactive entry point:
-
-```bash
-python3 -m poc.runner <audit-report.md> <workspace-dir>
-```
-
-This part is still being hardened — expect build/repro failures on
-less-conventional repos.
 
 ## Models
 
